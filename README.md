@@ -1,6 +1,6 @@
 # Intro-DeepLearning-NeuralNetworks-With-Keras
 
-These are my labs associated with course 2/13 from my IBM Professional certificate
+The 'Labs' folder contains my labs associated with course 2/13 from my IBM Professional certificate titled 'Intro to Deep Learning & Neural Networks with Keras' My final project for this course is an Aircraft Damage Classifier and Captioning tool.
 
 # FINAL PROJECT: Aircraft Damage Classification & Captioning
 
