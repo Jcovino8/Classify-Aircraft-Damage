@@ -27,8 +27,8 @@ np.random.seed(seed_value)
 tf.random.set_seed(seed_value)
 
 #Set the batch size,epochs
-batch_size = 
-n_epochs = 
+batch_size = 32
+n_epochs = 10
 img_rows, img_cols = 224, 224
 input_shape = (img_rows, img_cols, 3)
 
@@ -181,7 +181,7 @@ def plot_image_with_title(image, model, true_label, predicted_label, class_names
 # Function to test the model with images from the test set
 def test_model_on_image(test_generator, model, index_to_plot=0):
     # Get a batch of images and labels from the test generator
-    test_images, test_labels = next(test_generator)
+    test_images, test_labels = test_generator.__getitem__(0)
 
     # Make predictions on the batch
     predictions = model.predict(test_images)
