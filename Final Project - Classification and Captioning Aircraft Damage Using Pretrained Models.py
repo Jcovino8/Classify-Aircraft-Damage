@@ -8,13 +8,13 @@ os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 import zipfile
-import keras
-from keras.models import Sequential, Model
-from keras.layers import Dense, Dropout, Flatten
-from keras.applications import VGG16
-from keras.optimizers import Adam
+
 import tensorflow as tf
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.models import Sequential, Model # type: ignore
+from tensorflow.keras.layers import Dense, Dropout, Flatten # type: ignore
+from tensorflow.keras.applications import VGG16 # type: ignore
+from tensorflow.keras.optimizers import Adam # type: ignore
+from tensorflow.keras.preprocessing.image import ImageDataGenerator  # type: ignore
 import matplotlib.pyplot as plt
 import numpy as np
 from keras.preprocessing import image
@@ -36,6 +36,11 @@ import tarfile
 import urllib.request
 import os
 import shutil
+import stat
+
+def force_remove_readonly(func, path, exc_info):
+    os.chmod(path, stat.S_IWRITE)  # Make it writable
+    func(path)  # Retry the operation
 
 # URL of the tar file
 url = "https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/ZjXM4RKxlBK9__ZjHBLl5A/aircraft-damage-dataset-v1.tar"
@@ -53,7 +58,7 @@ if os.path.exists(extracted_folder):
     print(f"The folder '{extracted_folder}' already exists. Removing the existing folder.")
     
     # Remove the existing folder to avoid overwriting or duplication
-    shutil.rmtree(extracted_folder)
+    shutil.rmtree(extracted_folder, onerror=force_remove_readonly)
     print(f"Removed the existing folder: {extracted_folder}")
 
 # Extract the contents of the tar file
@@ -102,7 +107,7 @@ test_generator = test_datagen.flow_from_directory(
 base_model = VGG16(weights='imagenet', include_top=False, input_shape=(img_rows, img_cols, 3))
 
 output = base_model.layers[-1].output
-output = keras.layers.Flatten()(output)
+output = Flatten()(output)
 base_model = Model(base_model.input, output)
 
 # Freeze the base VGG16 model layers
@@ -163,7 +168,7 @@ print(f"Test Accuracy: {test_accuracy:.4f}")
 
 import numpy as np
 import matplotlib.pyplot as plt
-from tensorflow.keras.preprocessing import image
+# from tensorflow.preprocessing import image
 
 # Function to plot a single image and its prediction
 def plot_image_with_title(image, model, true_label, predicted_label, class_names):
@@ -279,28 +284,6 @@ def generate_text(image_path, task):
 
     # Return the generated text
     return result
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
